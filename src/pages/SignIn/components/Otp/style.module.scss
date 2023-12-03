@@ -1,0 +1,122 @@
+.wrapper {
+	display: flex;
+	flex-direction: column;
+}
+
+.back {
+	margin-bottom: 0.5rem;
+	cursor: pointer;
+}
+
+.welcome {
+	display: flex;
+	align-items: center;
+	flex-wrap: wrap;
+	margin-bottom: 0.5rem;
+	color: var(--bl-on-surface);
+	font-size: 1.25rem;
+	font-weight: 700;
+	line-height: 1.75rem; /* 140% */
+}
+
+.avatar {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	width: 2.25rem;
+	height: 2.25rem;
+	margin-left: 0.5rem;
+	border-radius: 2.25rem;
+	background-image: radial-gradient(101.42% 77.5% at 50% 22.5%, #f2b7c4 0%, var(--bl-primary) 100%);
+}
+
+.message {
+	display: flex;
+	flex: 1 0 100%;
+	margin-top: 0.5rem;
+	color: var(--surface-on-surface);
+	font-size: 0.875rem;
+	font-weight: 400;
+	line-height: 1.75rem; /* 200% */
+}
+
+.input {
+	margin-bottom: 1.5rem;
+	$inp: &;
+
+	& > div:first-child {
+		display: flex;
+		flex-flow: row-reverse;
+		gap: 0.5rem;
+		justify-content: space-between !important;
+	}
+
+	&:global(.error) {
+		#{$inp}__error {
+			color: var(--bl-error);
+			font-size: 0.875rem;
+			font-weight: 500;
+			line-height: 1.25rem; /* 142.857% */
+			margin-top: 0.75rem;
+		}
+
+		#{$inp}__otp {
+			border-color: var(--bl-error);
+		}
+	}
+
+	&__otp {
+		flex: 1 0 0;
+		flex-wrap: wrap;
+		justify-content: center;
+		direction: ltr;
+		padding: 0.75rem;
+		width: 3.8875rem !important;
+		height: 3.5rem !important;
+		border-radius: 0.75rem;
+		border: 1px solid var(--bl-on-surface-38);
+
+		& input {
+			width: 1.5rem !important;
+			height: 1.5rem;
+		}
+	}
+}
+
+.counter {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	height: 2.125rem;
+	margin-bottom: 1rem;
+
+	&__text {
+		color: var(--bl-on-surface);
+		font-size: 0.75rem;
+		font-weight: 500;
+		line-height: 1rem; /* 133.333% */
+	}
+
+	&__resend {
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		color: var(--bl-secondary);
+		font-size: 1rem;
+		font-weight: 500;
+		line-height: 1.5rem; /* 150% */
+		padding: 0.3125rem 0;
+	}
+}
+
+.forget {
+	color: var(--bl-secondary);
+	font-size: 0.875rem;
+	font-weight: 500;
+	line-height: 1.25rem; /* 142.857% */
+
+	&__icon {
+		color: var(--bl-secondary);
+		font-size: 0.625rem !important;
+	}
+}

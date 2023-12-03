@@ -1,0 +1,36 @@
+.wrapper {
+	display: flex;
+	flex-direction: column;
+}
+
+.input {
+	margin-bottom: 2rem;
+}
+
+.forget {
+	color: var(--bl-secondary);
+	font-size: 0.875rem;
+	font-weight: 500;
+	line-height: 1.25rem; /* 142.857% */
+
+	&__icon {
+		color: var(--bl-secondary);
+		font-size: 0.625rem !important;
+	}
+}
+
+.register {
+	display: flex;
+	justify-content: center;
+	gap: 0.625rem;
+	color: #000;
+	font-size: 1rem;
+	font-weight: 500;
+	line-height: 1.5rem; /* 150% */
+	margin-top: 2rem;
+
+	&__link {
+		color: var(--bl-secondary);
+		text-decoration: none;
+	}
+}
