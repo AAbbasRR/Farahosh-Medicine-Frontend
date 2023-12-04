@@ -1,4 +1,6 @@
-export const handleError = ({ err, notify, setError = null }) => {
+import notify from "./toast";
+
+export const handleError = ({ err, setError = null }) => {
   const response = err?.response?.data ?? {};
 
   if (Object.hasOwn(response, 'detail')) {

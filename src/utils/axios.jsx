@@ -23,7 +23,7 @@ instance.interceptors.response.use(
 		const logout = useAuthStore.getState().logout;
 		if (error?.response?.status === 401) {
 			logout();
-			window.location.href = "/reseller-panel/signin";
+			window.location.href = "/signin";
 			return;
 		}
 
