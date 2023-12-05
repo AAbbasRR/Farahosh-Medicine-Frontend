@@ -4,7 +4,6 @@ import { useMemo, useState } from "react";
 import { useForm } from "react-hook-form";
 import { Button } from "src/components/Button";
 import { Input } from "src/components/Input";
-import { Spin } from "src/components/Spin";
 import { handleError } from "src/utils/api-error-handling";
 import axios from "src/utils/axios";
 import notify from "src/utils/toast";
@@ -64,7 +63,7 @@ export const Mobile = ({ setStep, mobile_number, setMobileNumber }) => {
 			/>
 
 			<Button size="xlarge" loading={loading} disabled={loading}>
-				{loading ? <Spin /> : "ورود"}
+				ورود
 			</Button>
 		</form>
 	);

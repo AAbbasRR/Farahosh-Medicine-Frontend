@@ -7,7 +7,6 @@ import OtpInput from "react18-input-otp";
 import IconArrow from "src/assets/icons/icon-arrows-right-black.svg";
 import avatar from "src/assets/images/emoji-welcome.png";
 import { Button } from "src/components/Button";
-import { Spin } from "src/components/Spin";
 import useAuthStore from "src/store";
 import { handleError } from "src/utils/api-error-handling";
 import axios from "src/utils/axios";
@@ -130,7 +129,7 @@ export const Otp = ({ phone, setStep }) => {
 			</div>
 
 			<Button size="xlarge" disabled={loading} onClick={onSubmit}>
-				{loading ? <Spin /> : "تایید"}
+				تایید
 			</Button>
 		</div>
 	);

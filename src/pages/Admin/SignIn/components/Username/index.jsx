@@ -7,7 +7,6 @@ import IconEyeClose from "src/assets/icons/icon-eye-close.svg";
 import IconEyeOpen from "src/assets/icons/icon-eye-open.svg";
 import { Button } from "src/components/Button";
 import { Input } from "src/components/Input";
-import { Spin } from "src/components/Spin";
 import useAuthStore from "src/store";
 import { handleError } from "src/utils/api-error-handling";
 import axios from "src/utils/axios";
