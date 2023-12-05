@@ -5,6 +5,7 @@ import DashboardLayout from "./Dashboard/components/Layout";
 import Medicine from "./Dashboard/Medicine";
 import NotFound from "./404";
 import SignIn from "./SignIn";
+import AdminSignIn from "./Admin/SignIn";
 
 function Pages() {
 	const { accessToken } = useAuthStore();
@@ -18,6 +19,10 @@ function Pages() {
 					<Route path="medicines" element={<Medicine />} />
 					<Route path="*" element={<NotFound />} />
 				</Route>
+			</Route>
+			<Route path="/admin">
+				<Route index element={<AdminSignIn />} />
+				<Route path="login" element={<AdminSignIn />} />
 			</Route>
 			<Route path="*" element={<NotFound />} />
 		</Routes>

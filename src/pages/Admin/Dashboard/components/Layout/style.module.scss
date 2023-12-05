@@ -1,0 +1,35 @@
+.wrapper {
+	flex: 1;
+	display: flex;
+	width: 100%;
+	height: 100%;
+	margin-top: 5rem;
+
+	& > :global(.container) {
+		gap: 1.25rem;
+	}
+}
+
+.main {
+	flex: 1;
+	display: flex;
+	padding: 0.5rem 0.75rem;
+}
+
+:global(.dashboard) {
+	.main {
+		display: none;
+	}
+}
+
+@media (min-width: 900px) {
+	.main {
+		padding: 0;
+	}
+
+	:global(.dashboard) {
+		.main {
+			display: flex;
+		}
+	}
+}
