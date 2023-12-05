@@ -1,22 +1,24 @@
-import React, { useState } from 'react';
-import { Outlet, useLocation } from 'react-router-dom';
-import { Sidebar } from '../Sidebar';
-import style from './style.module.scss';
+import React, { useState } from "react";
+import { Outlet } from "react-router-dom";
+import { Navbar } from "./components/Navbar";
+import { Sidebar } from "./components/Sidebar";
+import styles from "./style.module.scss";
 
 const Layout = () => {
 	const [sidebar, setSidebar] = useState(false);
-	const { pathname } = useLocation();
-	const isDashboard = /^\/dashboard\/?$/.test(pathname);
 
 	return (
-		<div className={`${style.wrapper} ${isDashboard ? 'dashboard' : ''}`}>
-			<div className='container'>
+		<>
+			<div className={styles.wrapper}>
 				<Sidebar sidebar={sidebar} setSidebar={setSidebar} />
-				<main className={style.main}>
-					<Outlet />
-				</main>
+				<div className={styles.content}>
+					<main className={styles.main}>
+						<Outlet />
+					</main>
+				</div>
 			</div>
-		</div>
+			<Navbar setSidebar={setSidebar} />
+		</>
 	);
 };
 

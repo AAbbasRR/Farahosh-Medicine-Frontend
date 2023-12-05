@@ -1,19 +1,23 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { NavLink } from "react-router-dom";
-import IconCalculate from "src/assets/icons/icon-calculate.svg";
+import IconAdminManagement from "src/assets/icons/icon-admin-management.svg";
+import IconCustomerManagement from "src/assets/icons/icon-customer-management.svg";
 import IconRemove from "src/assets/icons/icon-exit-24.svg";
 import IconExit from "src/assets/icons/icon-exit.svg";
-import avatar from "src/assets/images/mask-group.png";
+import IconMedicineManagement from "src/assets/icons/icon-medicine-management.svg";
 import { Button } from "src/components/Button";
 import { Modal } from "src/components/Modal";
 import useAuthStore from "src/store";
-import axios from "src/utils/axios";
 import style from "./style.module.scss";
 
-const links = [{ name: "داروها", path: "/dashboard/medicines", icon: IconCalculate }];
+const menu = [
+	{ title: "مدیریت دارو ها", icon: IconMedicineManagement, path: "medicines-management" },
+	{ title: "مدیریت کارمندان", icon: IconAdminManagement, path: "admin-management" },
+	{ title: "مدیریت مشتریان", icon: IconCustomerManagement, path: "customer-management" },
+];
 
 export const Sidebar = ({ sidebar, setSidebar }) => {
-	const { userInfo, logout, updateUserInfo } = useAuthStore();
+	const { logout } = useAuthStore();
 
 	const [open, setOpen] = useState(false);
 
@@ -22,43 +26,38 @@ export const Sidebar = ({ sidebar, setSidebar }) => {
 		logout();
 	};
 
-	useEffect(() => {
-		axios.get("/user/auth/info/").then((res) => {
-			updateUserInfo(res.data);
-		});
-	}, []);
-
 	return (
 		<>
 			<aside className={`${style.wrapper} ${sidebar ? "active" : ""}`}>
 				<img
 					className={style.close}
+					alt="remove-icon"
 					src={IconRemove}
 					onClick={() => setSidebar(false)}
-					alt="remove-icon"
 				/>
-
 				<div className={style.header}>
-					<div className={style.title}>
-						<img src={avatar} className={style.title__icon} alt="avatar" />
-						<span className={style.title__text}>
-							<b>{userInfo?.full_name !== "" ? userInfo?.full_name : "ناشناس"}</b>
-							{userInfo?.mobile_number ?? userInfo?.email}
-						</span>
-					</div>
+					<div className={style.logo}>{/* <img src={logo} alt='logo' /> */}</div>
 				</div>
 
 				<div className={style.main}>
 					<nav className={style.nav}>
-						{links.map((link, i) => (
-							<NavLink key={i} to={link.path} end className={style.nav__link}>
-								<img className={style.nav__linkIcon} src={link.icon} alt="link-icon" />
-								<span className={style.nav__linkTitle}>{link.name}</span>
+						{menu.map((link, i) => (
+							<NavLink
+								key={i}
+								to={link.path}
+								end
+								className={style.nav__link}
+								onClick={() => setSidebar(false)}
+							>
+								<img className={style.nav__linkIcon} src={link.icon} alt="icon" />
+								<span className={style.nav__linkTitle}>{link.title}</span>
 							</NavLink>
 						))}
 
+						<div className={style.nav__separator_bottom} />
+
 						<button className={style.nav__link} onClick={() => setOpen(true)}>
-							<img className={style.nav__linkIcon} src={IconExit} alt="link-icon" />
+							<img className={style.nav__linkIcon} alt="logout-icon" src={IconExit} />
 							<span className={style.nav__linkTitle}>خروج</span>
 						</button>
 					</nav>

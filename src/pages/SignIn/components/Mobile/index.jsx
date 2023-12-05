@@ -44,7 +44,7 @@ export const Mobile = ({ setStep, mobile_number, setMobileNumber }) => {
 				setStep(1);
 			})
 			.catch((err) => {
-				handleError({ err, notify, setError });
+				handleError({ err, setError });
 			})
 			.finally(() => {
 				setLoading(false);

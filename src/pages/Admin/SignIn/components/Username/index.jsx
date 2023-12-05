@@ -45,7 +45,7 @@ export const Username = () => {
 				navigate("./dashboard");
 			})
 			.catch((err) => {
-				handleError({ err, notify, setError });
+				handleError({ err, setError });
 			})
 			.finally(() => {
 				setLoading(false);

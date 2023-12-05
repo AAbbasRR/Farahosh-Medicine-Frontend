@@ -44,7 +44,7 @@ export const Otp = ({ phone, setStep }) => {
 				notify(translate.notify.sendOtpSucceed, "success");
 			})
 			.catch((err) => {
-				handleError({ err, notify, setError });
+				handleError({ err, setError });
 			});
 	};
 
@@ -78,7 +78,7 @@ export const Otp = ({ phone, setStep }) => {
 				navigate("/dashboard");
 			})
 			.catch((err) => {
-				handleError({ err, notify, setError });
+				handleError({ err, setError });
 			})
 			.finally(() => {
 				setLoading(false);
