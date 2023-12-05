@@ -79,7 +79,7 @@ export const Username = () => {
 			/>
 
 			<Button className={style.button} size="xlarge" loading={loading} disabled={loading}>
-				{loading ? <Spin /> : "ورود"}
+				ورود
 			</Button>
 		</form>
 	);

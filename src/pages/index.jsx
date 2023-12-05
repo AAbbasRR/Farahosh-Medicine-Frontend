@@ -4,6 +4,7 @@ import useAuthStore from "src/store";
 import DashboardLayout from "./Dashboard/components/Layout";
 import AdminDashboardLayout from "./Admin/Dashboard/components/Layout";
 import MedicineManagement from "./Admin/Dashboard/MedicineManagement";
+import CustomerManagement from "./Admin/Dashboard/CustomerManagement";
 import Medicine from "./Dashboard/Medicine";
 import NotFound from "./404";
 import SignIn from "./SignIn";
@@ -29,6 +30,7 @@ function Pages() {
 					<Route element={<AdminDashboardLayout />}>
 						<Route index element={<MedicineManagement />} />
 						<Route path="medicines-management" element={<MedicineManagement />} />
+						<Route path="customer-management" element={<CustomerManagement />} />
 						<Route path="*" element={<NotFound />} />
 					</Route>
 				</Route>
