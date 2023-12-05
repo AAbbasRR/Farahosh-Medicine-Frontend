@@ -1,20 +1,82 @@
-import { Divider, Tooltip } from "@mui/material";
-import { Select } from "src/components/Select";
-import { handleError } from "src/utils/api-error-handling";
+import { Autocomplete, Divider, Popper, TextField, Tooltip } from "@mui/material";
+import { useEffect, useRef, useState } from "react";
 import iconRemove from "src/assets/icons/icon-remove.svg";
+import { Input } from "src/components/Input";
+import { handleError } from "src/utils/api-error-handling";
 import axios from "src/utils/axios";
 import style from "./style.module.scss";
-import { Input } from "src/components/Input";
 
-import { useEffect, useState } from "react";
+const styles = (theme) => ({
+	popper: {
+		width: "fit-content",
+	},
+});
+
+const sxProps = {
+	fontFamily: "inherit",
+	boxShadow: "none",
+	borderRadius: "0.75rem",
+	border: "1px solid var(--bl-on-surface-38)",
+	backgroundColor: "var(--bl-surface-container-lowest)",
+	"&.MuiFilledInput-root": {
+		borderColor: "transparent",
+		color: "var(--bl-on-surface)",
+		backgroundColor: "var(--bl-surface-container-low)",
+	},
+	"& .MuiInputBase-input": {
+		position: "relative",
+		fontSize: "0.75rem",
+		height: "1rem",
+		lineHeight: "1rem",
+		padding: "0.25rem 0.75rem 0.25rem !important",
+		minHeight: "unset",
+		"&:focus": {
+			boxShadow: "none",
+			backgroundColor: "transparent",
+		},
+	},
+};
 
 export const MedicineItem = () => {
+	const inputRefCode = useRef();
+	const inputRefName = useRef();
+	const inputRefNumber = useRef();
+
 	const [loading, setLoading] = useState(false);
 	const [medicineData, setMedicineData] = useState([]);
 	const [medicineNameOptions, setMedicineNameOptions] = useState([]);
 	const [medicineCodeOptions, setMedicineCodeOptions] = useState([]);
 	const [calculatedMedicine, setCalculatedMedicine] = useState([]);
+	const [tabIndexCount, setTabIndexCount] = useState(-1);
 
+	useEffect(() => {
+		const handleTab = (event) => {
+			if (event.keyCode === 9) {
+				event.preventDefault();
+				let counter = Number(
+					document.getElementById("hidden_tabindex_counter").getAttribute("count"),
+				);
+				let tabIndex = counter + 1;
+				if (tabIndex === 0) {
+					inputRefCode.current.focus();
+				} else if (tabIndex === 1) {
+					inputRefName.current.focus();
+				} else if (tabIndex === 2) {
+					tabIndex = -1;
+					inputRefNumber.current.focus();
+				}
+				setTabIndexCount(tabIndex);
+			}
+		};
+		document.addEventListener("keydown", handleTab);
+
+		return () => {
+			document.removeEventListener("keydown", handleTab);
+		};
+	}, []);
+	useEffect(() => {
+		document.getElementById("hidden_tabindex_counter").setAttribute("count", tabIndexCount);
+	}, [tabIndexCount]);
 	useEffect(() => {
 		setLoading(true);
 		axios
@@ -24,7 +86,7 @@ export const MedicineItem = () => {
 				const nameOptions = [];
 				res.data.map((item) => {
 					nameOptions.push({
-						name: `${item.title} - ${item.shape} - ${item.dose}`,
+						label: `${item.title} - ${item.shape} - ${item.dose}`,
 						value: item.id,
 					});
 				});
@@ -32,7 +94,7 @@ export const MedicineItem = () => {
 				const codeOptions = [];
 				res.data.map((item) => {
 					codeOptions.push({
-						name: item.brand_code,
+						label: item.brand_code,
 						value: item.id,
 					});
 				});
@@ -46,9 +108,9 @@ export const MedicineItem = () => {
 			});
 	}, []);
 
-	const addNewMedicineItem = (event) => {
-		const medicine = medicineData.find((item) => item.id === event.target.value);
-		const medicineInItem = calculatedMedicine.find((item) => item.id === event.target.value);
+	const addNewMedicineItem = (event, newValue) => {
+		const medicine = medicineData.find((item) => item.id === newValue.value);
+		const medicineInItem = calculatedMedicine.find((item) => item.id === newValue.value);
 		if (medicine !== medicineInItem) {
 			const calculatedMedicineVar = [...calculatedMedicine];
 			medicine.count = 1;
@@ -73,6 +135,7 @@ export const MedicineItem = () => {
 
 	return (
 		<div className={style.wrapper}>
+			<div id="hidden_tabindex_counter" stype={{ display: "none" }} count="0" />
 			<div className={style.info}>
 				<div className={style.info__headrow}>
 					<div className={style.info__start}>
@@ -104,12 +167,14 @@ export const MedicineItem = () => {
 								{item.title} - {item.shape} - {item.dose}
 							</span>
 							<span className={style.miniSize}>
-								<Input
+								{console.log(calculatedMedicine.length - 1 === index)}
+								<TextField
 									type="number"
 									size="xsmall"
 									value={item.count}
-									tabindex={`${calculatedMedicine.length + 2 - index}`}
+									inputRef={calculatedMedicine.length - 1 === index && inputRefNumber}
 									onChange={(e) => changeCountMedicineItem(e, item)}
+									sx={sxProps}
 								/>
 							</span>
 							<span>{(item?.price_exchange_subsidy).toLocaleString()}</span>
@@ -127,21 +192,34 @@ export const MedicineItem = () => {
 				<div className={style.info__row}>
 					<div className={style.info__start}>
 						<span>
-							<Select
-								size="medium"
+							<Autocomplete
+								disablePortal
+								id="medicine_code"
+								size="small"
+								fullWidth
 								options={medicineCodeOptions}
-								name="medicine_code"
+								renderInput={(params) => (
+									<TextField size="small" inputRef={inputRefCode} {...params} sx={sxProps} />
+								)}
 								onChange={addNewMedicineItem}
-								tabindex="1"
+								value={null}
 							/>
 						</span>
 						<span>
-							<Select
-								size="medium"
+							<Autocomplete
+								disablePortal
+								fullWidth
+								PopperComponent={(props) => (
+									<Popper {...props} style={styles.popper} placement="bottom-start" />
+								)}
+								id="medicine_name"
+								size="small"
 								options={medicineNameOptions}
-								name="medicine_name"
+								renderInput={(params) => (
+									<TextField size="small" {...params} inputRef={inputRefName} sx={sxProps} />
+								)}
 								onChange={addNewMedicineItem}
-								tabindex="2"
+								value={null}
 							/>
 						</span>
 						<span className={style.miniSize}>0</span>

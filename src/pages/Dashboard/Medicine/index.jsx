@@ -17,7 +17,6 @@ const Medicine = () => {
 					alt="back-icon"
 				/>
 				<div className={style.header}>دارو ها</div>
-
 				<div className={style.main}>
 					<div className={style.section}>
 						<div className={style.heading}>
