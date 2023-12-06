@@ -34,6 +34,7 @@ const MedicineModal = ({
 		register,
 		setError,
 		setValue,
+		reset,
 		handleSubmit,
 		formState: { errors },
 	} = useForm({
@@ -74,6 +75,7 @@ const MedicineModal = ({
 	};
 	const closeModal = () => {
 		setOpen(false);
+		reset();
 		setDefaultValue(null);
 	};
 

@@ -20,10 +20,15 @@ instance.interceptors.response.use(
 		return res;
 	},
 	(error) => {
-		const logout = useAuthStore.getState().logout;
 		if (error?.response?.status === 401) {
+			const logout = useAuthStore.getState().logout;
+			const userInfo = useAuthStore.getState().userInfo;
+			let href = "/signin";
+			if (userInfo?.is_staff === true || userInfo?.is_superuser === true) {
+				href = "/admin/signin";
+			}
 			logout();
-			window.location.href = "/signin";
+			window.location.href = href;
 			return;
 		}
 

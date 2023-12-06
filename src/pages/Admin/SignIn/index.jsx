@@ -11,7 +11,7 @@ const AdminSignIn = () => {
 
 	useEffect(() => {
 		if (accessToken) {
-			navigate("./dashboard");
+			navigate("/admin/dashboard");
 		}
 	}, [accessToken]);
 

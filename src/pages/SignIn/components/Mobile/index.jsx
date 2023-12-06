@@ -34,7 +34,6 @@ export const Mobile = ({ setStep, mobile_number, setMobileNumber }) => {
 
 	const onSubmit = (data) => {
 		setLoading(true);
-
 		axios
 			.post("/user/auth/login/", data)
 			.then((res) => {

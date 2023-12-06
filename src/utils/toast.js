@@ -1,14 +1,14 @@
-import { toast } from 'react-toastify';
+import { toast } from "react-toastify";
 
-const notify = (message, type = 'info') => {
+const notify = (message, type = "info") => {
 	switch (type) {
-		case 'success':
+		case "success":
 			toast.success(message);
 			break;
-		case 'warning':
+		case "warning":
 			toast.warning(message);
 			break;
-		case 'error':
+		case "error":
 			toast.error(message);
 			break;
 		default:

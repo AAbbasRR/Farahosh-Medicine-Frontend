@@ -11,13 +11,28 @@ import useAuthStore from "src/store";
 import style from "./style.module.scss";
 
 const menu = [
-	{ title: "مدیریت دارو ها", icon: IconMedicineManagement, path: "medicines-management" },
-	{ title: "مدیریت کارمندان", icon: IconAdminManagement, path: "admin-management" },
-	{ title: "مدیریت مشتریان", icon: IconCustomerManagement, path: "customer-management" },
+	{
+		title: "مدیریت دارو ها",
+		icon: IconMedicineManagement,
+		path: "medicines-management",
+		superuser: false,
+	},
+	{
+		title: "مدیریت کارمندان",
+		icon: IconAdminManagement,
+		path: "admin-management",
+		superuser: true,
+	},
+	{
+		title: "مدیریت مشتریان",
+		icon: IconCustomerManagement,
+		path: "customer-management",
+		superuser: false,
+	},
 ];
 
 export const Sidebar = ({ sidebar, setSidebar }) => {
-	const { logout } = useAuthStore();
+	const { logout, userInfo } = useAuthStore();
 
 	const [open, setOpen] = useState(false);
 
@@ -41,18 +56,24 @@ export const Sidebar = ({ sidebar, setSidebar }) => {
 
 				<div className={style.main}>
 					<nav className={style.nav}>
-						{menu.map((link, i) => (
-							<NavLink
-								key={i}
-								to={link.path}
-								end
-								className={style.nav__link}
-								onClick={() => setSidebar(false)}
-							>
-								<img className={style.nav__linkIcon} src={link.icon} alt="icon" />
-								<span className={style.nav__linkTitle}>{link.title}</span>
-							</NavLink>
-						))}
+						{menu.map((link, i) => {
+							if (
+								link?.superuser === false ||
+								(link?.superuser === true && userInfo?.is_superuser === true)
+							)
+								return (
+									<NavLink
+										key={i}
+										to={link.path}
+										end
+										className={style.nav__link}
+										onClick={() => setSidebar(false)}
+									>
+										<img className={style.nav__linkIcon} src={link.icon} alt="icon" />
+										<span className={style.nav__linkTitle}>{link.title}</span>
+									</NavLink>
+								);
+						})}
 
 						<div className={style.nav__separator_bottom} />
 

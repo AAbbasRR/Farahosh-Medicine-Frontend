@@ -167,7 +167,6 @@ export const MedicineItem = () => {
 								{item.title} - {item.shape} - {item.dose}
 							</span>
 							<span className={style.miniSize}>
-								{console.log(calculatedMedicine.length - 1 === index)}
 								<TextField
 									type="number"
 									size="xsmall"

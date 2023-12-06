@@ -41,7 +41,7 @@ export const Username = () => {
 			.then(async (res) => {
 				await login({ ...res.data });
 				notify(translate.notify.entranceSuccess, "success");
-				navigate("./dashboard");
+				navigate("/admin/dashboard");
 			})
 			.catch((err) => {
 				handleError({ err, setError });
