@@ -1,4 +1,4 @@
-import { ToastContainer } from 'react-toastify';
+import { ToastContainer } from "react-toastify";
 import { BrowserRouter } from "react-router-dom";
 import Pages from "./pages";
 
@@ -9,7 +9,7 @@ function App() {
 	return (
 		<>
 			<BrowserRouter>
-			<ToastContainer />
+				<ToastContainer />
 				<Pages />
 			</BrowserRouter>
 		</>

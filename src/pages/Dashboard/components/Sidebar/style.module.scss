@@ -59,7 +59,11 @@
 		width: 2.25rem;
 		height: 2.25rem;
 		border-radius: 2.25rem;
-		background-image: radial-gradient(101.42% 77.5% at 50% 22.5%, #f2b7c4 0%, var(--bl-primary) 100%);
+		background-image: radial-gradient(
+			101.42% 77.5% at 50% 22.5%,
+			#f2b7c4 0%,
+			var(--bl-primary) 100%
+		);
 	}
 
 	&__text {
