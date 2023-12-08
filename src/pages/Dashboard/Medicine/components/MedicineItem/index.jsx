@@ -1,7 +1,6 @@
 import { Autocomplete, Divider, Popper, TextField, Tooltip } from "@mui/material";
 import { useEffect, useRef, useState } from "react";
 import iconRemove from "src/assets/icons/icon-remove.svg";
-import { Input } from "src/components/Input";
 import { handleError } from "src/utils/api-error-handling";
 import axios from "src/utils/axios";
 import style from "./style.module.scss";
@@ -38,14 +37,12 @@ const sxProps = {
 };
 
 export const MedicineItem = () => {
-	const inputRefCode = useRef();
 	const inputRefName = useRef();
 	const inputRefNumber = useRef();
 
 	const [loading, setLoading] = useState(false);
 	const [medicineData, setMedicineData] = useState([]);
 	const [medicineNameOptions, setMedicineNameOptions] = useState([]);
-	const [medicineCodeOptions, setMedicineCodeOptions] = useState([]);
 	const [calculatedMedicine, setCalculatedMedicine] = useState([]);
 	const [tabIndexCount, setTabIndexCount] = useState(-1);
 
@@ -58,12 +55,8 @@ export const MedicineItem = () => {
 				);
 				let tabIndex = counter + 1;
 				if (tabIndex === 0) {
-					inputRefCode.current.focus();
-				} else if (tabIndex === 1) {
-					inputRefName.current.focus();
-				} else if (tabIndex === 2) {
 					tabIndex = -1;
-					inputRefNumber.current.focus();
+					inputRefName.current.focus();
 				}
 				setTabIndexCount(tabIndex);
 			}
@@ -71,6 +64,9 @@ export const MedicineItem = () => {
 		document.addEventListener("keydown", handleTab);
 
 		return () => {
+			if (inputRefName.current) {
+				inputRefName.current.focus();
+			}
 			document.removeEventListener("keydown", handleTab);
 		};
 	}, []);
@@ -86,19 +82,12 @@ export const MedicineItem = () => {
 				const nameOptions = [];
 				res.data.map((item) => {
 					nameOptions.push({
-						label: `${item.title} - ${item.shape} - ${item.dose}`,
+						label: `${item.title} - ${item.brand_code} - ${item.shape} - ${item.dose}`,
 						value: item.id,
+						key: item.id,
 					});
 				});
 				setMedicineNameOptions(nameOptions);
-				const codeOptions = [];
-				res.data.map((item) => {
-					codeOptions.push({
-						label: item.brand_code,
-						value: item.id,
-					});
-				});
-				setMedicineCodeOptions(codeOptions);
 			})
 			.catch((err) => {
 				handleError(err);
@@ -107,11 +96,15 @@ export const MedicineItem = () => {
 				setLoading(false);
 			});
 	}, []);
+	useEffect(() => {
+		if (inputRefNumber.current) {
+			inputRefNumber.current.focus();
+		}
+	}, [calculatedMedicine]);
 
 	const addNewMedicineItem = (event, newValue) => {
-		const medicine = medicineData.find((item) => item.id === newValue.value);
-		const medicineInItem = calculatedMedicine.find((item) => item.id === newValue.value);
-		if (medicine !== medicineInItem) {
+		if (newValue) {
+			const medicine = medicineData.find((item) => item.id === newValue.value);
 			const calculatedMedicineVar = [...calculatedMedicine];
 			medicine.count = 1;
 			calculatedMedicineVar.push(medicine);
@@ -167,14 +160,21 @@ export const MedicineItem = () => {
 								{item.title} - {item.shape} - {item.dose}
 							</span>
 							<span className={style.miniSize}>
-								<TextField
-									type="number"
-									size="xsmall"
-									value={item.count}
-									inputRef={calculatedMedicine.length - 1 === index && inputRefNumber}
-									onChange={(e) => changeCountMedicineItem(e, item)}
-									sx={sxProps}
-								/>
+								<form
+									onSubmit={(e) => {
+										e.preventDefault();
+										inputRefName.current.focus();
+									}}
+								>
+									<TextField
+										type="number"
+										size="xsmall"
+										value={item.count}
+										inputRef={calculatedMedicine.length - 1 === index && inputRefNumber}
+										onChange={(e) => changeCountMedicineItem(e, item)}
+										sx={sxProps}
+									/>
+								</form>
 							</span>
 							<span>{(item?.price_exchange_subsidy).toLocaleString()}</span>
 							<span>{(item.count * item?.price_exchange_subsidy).toLocaleString()}</span>
@@ -190,20 +190,7 @@ export const MedicineItem = () => {
 				))}
 				<div className={style.info__row}>
 					<div className={style.info__start}>
-						<span>
-							<Autocomplete
-								disablePortal
-								id="medicine_code"
-								size="small"
-								fullWidth
-								options={medicineCodeOptions}
-								renderInput={(params) => (
-									<TextField size="small" inputRef={inputRefCode} {...params} sx={sxProps} />
-								)}
-								onChange={addNewMedicineItem}
-								value={null}
-							/>
-						</span>
+						<span>خالی</span>
 						<span>
 							<Autocomplete
 								disablePortal
@@ -218,7 +205,7 @@ export const MedicineItem = () => {
 									<TextField size="small" {...params} inputRef={inputRefName} sx={sxProps} />
 								)}
 								onChange={addNewMedicineItem}
-								value={null}
+								value={""}
 							/>
 						</span>
 						<span className={style.miniSize}>0</span>
